@@ -49,12 +49,11 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not destroy product that line items point to" do
-    # can't delete this product (product :two) because line_items.yml has carts that point to it 
+    # can't delete this product (product :two) because line_items.yml has carts that point to it
     assert_raises ActiveRecord::RecordNotDestroyed do
       delete product_url(products(:two))
     end
 
     assert Product.exists?(products(:two).id)
   end
-
 end
