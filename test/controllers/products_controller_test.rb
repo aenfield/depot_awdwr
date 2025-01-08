@@ -40,10 +40,21 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy product" do
+    # can delete this product (product :one) because line_items.yml doesn't have any lineitems referencing product one
     assert_difference("Product.count", -1) do
       delete product_url(@product)
     end
 
     assert_redirected_to products_url
   end
+
+  test "should not destroy product that line items point to" do
+    # can't delete this product (product :two) because line_items.yml has carts that point to it 
+    assert_raises ActiveRecord::RecordNotDestroyed do
+      delete product_url(products(:two))
+    end
+
+    assert Product.exists?(products(:two).id)
+  end
+
 end
