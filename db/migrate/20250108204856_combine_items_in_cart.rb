@@ -9,7 +9,7 @@ class CombineItemsInCart < ActiveRecord::Migration[7.2]
         if quantity > 1
           # remove indiv items for this product first
           cart.line_items.where(product_id: product_id).delete_all
-          
+
           # and then replace w/ a single item
           item = cart.line_items.build(product_id: product_id)
           item.quantity = quantity
@@ -20,7 +20,7 @@ class CombineItemsInCart < ActiveRecord::Migration[7.2]
   end
 
   def down
-    # split items with quantity > 1 into multiple items
+     # split items with quantity > 1 into multiple items
      LineItem.where("quantity>1").each do |line_item|
       line_item.quantity.times do
         LineItem.create(
