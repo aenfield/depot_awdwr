@@ -35,7 +35,7 @@ class LineItemsController < ApplicationController
         #     locals: { cart: @cart }
         #   )
         # end
-        format.turbo_stream # I think this'll use the app/views/line_items/create.turbo_stream.erb template - it could go here inline but best practice is a template if the 'response has multiple items'
+        format.turbo_stream { @current_item = @line_item } # I think this'll use the app/views/line_items/create.turbo_stream.erb template - it could go here inline but best practice is a template if the 'response has multiple items'
         format.html { redirect_to store_index_url }
         format.json { render :show, status: :created, location: @line_item }
       else
