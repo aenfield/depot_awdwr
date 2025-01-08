@@ -3,7 +3,7 @@ require "test_helper"
 class ProductTest < ActiveSupport::TestCase
   fixtures :products # not needed because default is to load all fixtures (not just products)
 
-  test "product attributes must not be empty" do 
+  test "product attributes must not be empty" do
     product = Product.new
     assert product.invalid?
     assert product.errors[:title].any?
@@ -14,7 +14,7 @@ class ProductTest < ActiveSupport::TestCase
 
   test "product price must be positive" do
     expected_error_msg = "must be greater than or equal to 0.01" # p95 shows how to use error table for messages
-    product = new_product('foo.png')
+    product = new_product("foo.png")
     product.price = -1
 
     assert product.invalid?
@@ -37,15 +37,15 @@ class ProductTest < ActiveSupport::TestCase
       assert new_product(image_url).valid?, "#{image_url} must be valid"
     end
 
-    bad.each do |image_url| 
+    bad.each do |image_url|
       assert new_product(image_url).invalid?, "#{image_url} must be invalid"
     end
   end
 
   test "product is not valid without a unique title" do
-    product = new_product('foo.png')
+    product = new_product("foo.png")
     product.title = products(:ruby).title
-    
+
     assert product.invalid?
     assert_equal [ "has already been taken" ], product.errors[:title] # p95 shows how to use error table for messages
   end
