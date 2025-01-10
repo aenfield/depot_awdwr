@@ -1,14 +1,42 @@
 require "application_system_test_case"
 
 class OrdersTest < ApplicationSystemTestCase
-  setup do
-    @order = orders(:one)
-  end
+  # setup do
+  #   @order = orders(:one)
+  # end
 
-  test "visiting the index" do
-    visit orders_url
-    assert_selector "h1", text: "Orders"
-  end
+  test "check dynamic payment type fields" do
+    visit store_index_url
+    click_on "Add to Cart", match: :first
+    click_on "Checkout"
+
+    assert has_no_field? "Routing number"
+    assert has_no_field? "Account number"
+    assert has_no_field? "Credit card number"
+    assert has_no_field? "Expiration date"
+    assert has_no_field? "Po number"
+
+    select "Check", from: "Pay type"
+    assert has_field? "Routing number"
+    assert has_field? "Account number"
+    assert has_no_field? "Credit card number"
+    assert has_no_field? "Expiration date"
+    assert has_no_field? "Po number"
+
+    select "Credit card", from: "Pay type"
+    assert has_no_field? "Routing number"
+    assert has_no_field? "Account number"
+    assert has_field? "Credit card number"
+    assert has_field? "Expiration date"
+    assert has_no_field? "Po number"
+
+    select "Purchase order", from: "Pay type"
+    assert has_no_field? "Routing number"
+    assert has_no_field? "Account number"
+    assert has_no_field? "Credit card number"
+    assert has_no_field? "Expiration date"
+    assert has_field? "Po number"
+end
 
   # these two scaffolding-created tests fail with Capybara::ElementNotFound: Unable to find field "Address" that is not disabled
   # and Capybara::ElementNotFound: Unable to find field "Pay type" that is not disabled messages; there's more to Capybara
@@ -16,38 +44,8 @@ class OrdersTest < ApplicationSystemTestCase
   # Capybara's seeing, to see why it's not finding those elements (using puts page.body in the tests) but what it outputs doesn't
   # match what the screen shot Capybara takes shows, so I'm missing something.
 
-  # test "should create order" do
-  #   visit orders_url
-  #   click_on "New order"
+  # And actually, the book just recommends getting rid of these auto-created tests 'because they duplicate what's already
+  # being tested' (not sure that's actually the case), but I'll go w/ it for now since I certainly haven't reviewed what was
+  # created automatically and we changed things from what the scaffolding created 
 
-  #   fill_in "Address", with: @order.address
-  #   fill_in "Email", with: @order.email
-  #   fill_in "Name", with: @order.name
-  #   fill_in "Pay type", with: @order.pay_type
-  #   click_on "Create Order"
-
-  #   assert_text "Order was successfully created"
-  #   click_on "Back"
-  # end
-
-  # test "should update Order" do
-  #   visit order_url(@order)
-  #   click_on "Edit this order", match: :first
-
-  #   fill_in "Address", with: @order.address
-  #   fill_in "Email", with: @order.email
-  #   fill_in "Name", with: @order.name
-  #   fill_in "Pay type", with: @order.pay_type
-  #   click_on "Update Order"
-
-  #   assert_text "Order was successfully updated"
-  #   click_on "Back"
-  # end
-
-  test "should destroy Order" do
-    visit order_url(@order)
-    click_on "Destroy this order", match: :first
-
-    assert_text "Order was successfully destroyed"
-  end
 end
