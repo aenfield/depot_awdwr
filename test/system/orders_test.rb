@@ -46,6 +46,5 @@ end
 
   # And actually, the book just recommends getting rid of these auto-created tests 'because they duplicate what's already
   # being tested' (not sure that's actually the case), but I'll go w/ it for now since I certainly haven't reviewed what was
-  # created automatically and we changed things from what the scaffolding created 
-
+  # created automatically and we changed things from what the scaffolding created
 end
