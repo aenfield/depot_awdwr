@@ -57,3 +57,6 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# part of 3.4 standard library, but won't be in 3.5 so adding this here now to silence the warning
+gem "ostruct"

@@ -1,9 +1,7 @@
 require "application_system_test_case"
 
 class OrdersTest < ApplicationSystemTestCase
-  # setup do
-  #   @order = orders(:one)
-  # end
+  include ActiveJob::TestHelper
 
   test "check dynamic payment type fields" do
     visit store_index_url
@@ -36,7 +34,49 @@ class OrdersTest < ApplicationSystemTestCase
     assert has_no_field? "Credit card number"
     assert has_no_field? "Expiration date"
     assert has_field? "Po number"
-end
+  end
+
+  test "check order and delivery" do
+    LineItem.delete_all
+    Order.delete_all
+
+    visit store_index_url
+
+    click_on "Add to Cart", match: :first
+
+    click_on "Checkout"
+
+    fill_in "Name", with: "Dave Thomas"
+    fill_in "Address", with: "123 Main Street"
+    fill_in "Email", with: "dave@example.com"
+
+    select "Check", from: "Pay type"
+    fill_in "Routing number", with: "123"
+    fill_in "Account number", with: "456"
+
+    click_button "Place order"
+    assert_text "Thank you for your order"
+
+    # we have two jobs enqueued: the charge job we queue and the mail job the charge job itself queues
+    perform_enqueued_jobs
+    perform_enqueued_jobs
+    assert_performed_jobs 2
+
+    orders = Order.all
+    assert_equal 1, orders.size
+
+    order = Order.first
+    assert_equal "Dave Thomas", order.name
+    assert_equal "123 Main Street", order.address
+    assert_equal "dave@example.com", order.email
+    assert_equal "Check", order.pay_type
+    assert_equal 1, order.line_items.size
+
+    mail = ActionMailer::Base.deliveries.last
+    assert_equal [ "dave@example.com" ], mail.to
+    assert_equal "Andrew Enfield <depot@example.com>", mail[:from].value
+    assert_equal "Pragmatic Store order confirmation", mail.subject
+  end
 
   # these two scaffolding-created tests fail with Capybara::ElementNotFound: Unable to find field "Address" that is not disabled
   # and Capybara::ElementNotFound: Unable to find field "Pay type" that is not disabled messages; there's more to Capybara
