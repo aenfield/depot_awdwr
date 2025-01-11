@@ -8,6 +8,9 @@ class UsersTest < ApplicationSystemTestCase
   test "visiting the index" do
     visit users_url
     assert_selector "h1", text: "Users"
+
+    assert_text "dave"
+    assert_text "adaobi"
   end
 
   test "should create user" do
@@ -35,7 +38,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "should destroy User" do
-    visit user_url(@user)
+    visit user_url(users(:two))
     click_on "Destroy this user", match: :first
 
     assert_text "User was successfully destroyed"
