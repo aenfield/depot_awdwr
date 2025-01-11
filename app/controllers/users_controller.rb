@@ -57,6 +57,11 @@ class UsersController < ApplicationController
     end
   end
 
+  # my note: rescue_from is a Rails-specific thing that enables centralized handling of exceptions in controllers - it's not a Ruby thing (which is just 'rescue')
+  rescue_from "User::Error" do |exception|
+    redirect_to users_url, notice: exception.message
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
