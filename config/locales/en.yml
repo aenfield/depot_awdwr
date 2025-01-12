@@ -57,3 +57,25 @@ en:
         delimiter:  ","
         format:     "%u%n"
 
+  orders:
+    new:
+      legend:       "Please enter your details"
+    form:
+      name:         "Name"
+      address_html: "Address"
+      email:        "Email"
+      pay_type:     "Pay with"
+      pay_prompt_html: "Select a payment method"
+      submit:       "Place order"
+      pay_types:
+        "Check":          "Check"
+        "Credit card":    "Credit card"
+        "Purchase order": "Purchase order"
+    check:
+      routing_number:   "Routing number"
+      account_number:   "Account number"
+    cc:
+      cc_number:        "Credit card number"
+      expiration_date:  "Expiration date"
+    po:
+      po_number:        "PO number"
