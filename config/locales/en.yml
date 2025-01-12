@@ -66,7 +66,7 @@ en:
       email:        "Email"
       pay_type:     "Pay with"
       pay_prompt_html: "Select a payment method"
-      submit:       "Place order"
+      submit:       "Place order" 
       pay_types:
         "Check":          "Check"
         "Credit card":    "Credit card"
