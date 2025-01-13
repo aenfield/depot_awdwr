@@ -18,7 +18,7 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
-# Use Redis adapter to run Action Cable in production
+# Use Redis adapter to run Action Cable in production - I moved this to the production section below
 # gem "redis", ">= 4.0.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
@@ -60,3 +60,6 @@ end
 
 # part of 3.4 standard library, but won't be in 3.5 so adding this here now to silence the warning
 gem "ostruct"
+
+gem "pg", "~> 1.5", group: :production
+gem "redis", ">= 4.0.1", group: :production
