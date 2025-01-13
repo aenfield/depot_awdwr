@@ -1,6 +1,7 @@
 services:
   web:
     build: .
+    image: aenfield/depot-web
     volumes:
       - ./log:/rails/log
       - ./storage:/rails/storage
